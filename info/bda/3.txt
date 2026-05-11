@@ -1,0 +1,386 @@
+Problem Statement
+
+Develop a MapReduce program to:
+
+Read student marks
+Assign grades based on marks
+Display final grades of students
+🔷 Understanding the Input File
+
+Suppose students.txt contains:
+
+Apurv 95
+Rahul 76
+Sneha 45
+Priya 88
+Aman 60
+
+Format:
+
+Name Marks
+🔷 Goal of the Program
+
+We need to:
+
+Read each student's marks
+Decide grade
+
+Display:
+
+Name -> Grade
+🔷 What is MapReduce?
+
+Apache Hadoop uses MapReduce for processing large datasets.
+
+MapReduce has 2 phases:
+
+🔶 1. Mapper Phase
+
+Mapper:
+
+Reads input data
+Processes it
+Produces key-value pairs
+
+Example:
+
+("Apurv", "A")
+🔶 2. Reducer Phase
+
+Reducer:
+
+Collects mapper output
+Organizes final result
+🔷 Flow of This Program
+6
+
+Input File
+⬇
+Mapper
+⬇
+(Name, Grade) Pairs
+⬇
+Reducer
+⬇
+Final Grades
+
+🔷 Full Code
+# Function to assign grade
+def get_grade(marks):
+    if marks >= 90:
+        return 'A'
+    elif marks >= 75:
+        return 'B'
+    elif marks >= 50:
+        return 'C'
+    else:
+        return 'D'
+
+
+# Mapper Function
+def mapper(file_path):
+    with open(file_path, 'r') as file:
+        for line in file:
+            # Format: Name Marks
+            name, marks = line.strip().split()
+            marks = int(marks)
+            
+            grade = get_grade(marks)
+            yield (name, grade)
+
+
+# Reducer Function
+def reducer(mapped_data):
+    result = {}
+    
+    for name, grade in mapped_data:
+        result[name] = grade   # one grade per student
+    
+    return result
+
+
+# Driver Function
+def main():
+    file_path = "students.txt"
+
+    # Map Phase
+    mapped = list(mapper(file_path))
+
+    # Reduce Phase
+    reduced = reducer(mapped)
+
+    # Output
+    print("Student Grades:")
+    for name, grade in reduced.items():
+        print(f"{name} -> {grade}")
+
+
+if __name__ == "__main__":
+    main()
+🔷 Line-by-Line Explanation
+🔶 Grade Function
+def get_grade(marks):
+Explanation:
+
+Function to decide grade based on marks.
+
+marks
+→ student's score.
+
+🔶 Grade A Condition
+if marks >= 90:
+    return 'A'
+Explanation:
+
+If marks are 90 or above:
+Grade = A
+
+🔶 Grade B Condition
+elif marks >= 75:
+    return 'B'
+Explanation:
+
+If marks are between 75–89:
+Grade = B
+
+🔶 Grade C Condition
+elif marks >= 50:
+    return 'C'
+Explanation:
+
+If marks are between 50–74:
+Grade = C
+
+🔶 Grade D Condition
+else:
+    return 'D'
+Explanation:
+
+If marks are below 50:
+Grade = D
+
+🔷 Grade Logic
+
+Grade=
+⎩
+⎨
+⎧
+	​
+
+A
+B
+C
+D
+	​
+
+if marks≥90
+if 75≤marks<90
+if 50≤marks<75
+if marks<50
+	​
+
+
+🔷 Mapper Function
+def mapper(file_path):
+Explanation:
+
+Defines mapper function.
+
+Reads student file.
+
+🔶 Open File
+with open(file_path, 'r') as file:
+Explanation:
+
+Opens file in read mode.
+
+🔶 Read Each Line
+for line in file:
+Explanation:
+
+Reads one student record at a time.
+
+Example:
+
+Apurv 95
+🔶 Split Data
+name, marks = line.strip().split()
+Explanation:
+strip()
+
+Removes extra spaces/newline.
+
+split()
+
+Separates values.
+
+Example:
+
+"Apurv 95"
+
+becomes:
+
+name = "Apurv"
+marks = "95"
+🔶 Convert Marks to Integer
+marks = int(marks)
+Explanation:
+
+Converts marks from string to integer.
+
+Example:
+
+"95" → 95
+🔶 Get Grade
+grade = get_grade(marks)
+Explanation:
+
+Calls grade function.
+
+Example:
+
+get_grade(95)
+
+returns:
+
+'A'
+🔶 Yield Output
+yield (name, grade)
+Explanation:
+
+Mapper produces key-value pair.
+
+Example:
+
+("Apurv", "A")
+🔷 What is yield?
+
+yield
+returns values one by one instead of storing all at once.
+
+Efficient for large datasets.
+
+🔷 Reducer Function
+def reducer(mapped_data):
+Explanation:
+
+Reducer processes mapper output.
+
+🔶 Create Result Dictionary
+result = {}
+Explanation:
+
+Stores final grades.
+
+Example:
+
+{
+ "Apurv":"A"
+}
+🔶 Process Mapper Output
+for name, grade in mapped_data:
+Explanation:
+
+Reads mapper key-value pairs.
+
+🔶 Store Final Grade
+result[name] = grade
+Explanation:
+
+Assigns grade to student.
+
+🔶 Return Final Result
+return result
+
+Returns all student grades.
+
+🔷 Driver Function
+def main():
+
+Main program starts here.
+
+🔶 File Name
+file_path = "students.txt"
+
+Input file path.
+
+🔶 Execute Mapper
+mapped = list(mapper(file_path))
+Explanation:
+
+Runs mapper phase.
+
+Example output:
+
+[
+ ('Apurv', 'A'),
+ ('Rahul', 'B')
+]
+🔶 Execute Reducer
+reduced = reducer(mapped)
+Explanation:
+
+Runs reducer phase.
+
+🔶 Print Heading
+print("Student Grades:")
+🔶 Print Final Output
+for name, grade in reduced.items():
+
+Loops through final dictionary.
+
+print(f"{name} -> {grade}")
+
+Prints:
+
+Apurv -> A
+🔷 Special Python Syntax
+📌 f-string
+f"{name} -> {grade}"
+
+Used for formatted printing.
+
+🔷 Main Execution Check
+if __name__ == "__main__":
+    main()
+Explanation:
+
+Ensures program runs only when file is executed directly.
+
+🔷 Final Output Example
+Student Grades:
+Apurv -> A
+Rahul -> B
+Sneha -> D
+Priya -> B
+Aman -> C
+🔷 Important Terms
+Term	Meaning
+MapReduce	Big data processing model
+Mapper	Produces key-value pairs
+Reducer	Combines/processes mapper output
+yield	Returns values one by one
+Dictionary	Stores key-value data
+split()	Separates string values
+strip()	Removes spaces/newlines
+🔷 Advantages of MapReduce
+Advantage	Explanation
+Parallel Processing	Faster execution
+Scalable	Handles big data
+Distributed Computing	Works on multiple systems
+Efficient	Good for huge datasets
+🔷 Real Life Applications
+
+MapReduce is used in:
+
+Google
+Facebook
+Amazon
+Netflix
+
+for:
+
+log analysis
+recommendation systems
+search engines
+analytics
