@@ -1,0 +1,129 @@
+ Step 1: Download MongoDB
+Go to the official website:
+MongoDB Community Server
+Select:
+
+
+Version → Latest
+
+
+Platform → Windows
+
+
+Package → MSI
+
+
+Click Download.
+
+🔷 Step 2: Install MongoDB
+
+
+Open downloaded .msi file
+
+
+Click Next
+
+
+Accept License Agreement
+
+
+Choose Complete Installation
+
+
+Tick:
+
+
+✅ Install MongoDB as a Service
+
+
+✅ Install MongoDB Compass
+
+
+
+
+Click Install
+
+
+Finish setup
+
+
+
+🔷 Step 3: Verify Installation
+Open Command Prompt and type:
+mongosh
+If installation is successful:
+test>
+will appear.
+
+🔷 Step 4: Create Database
+In mongosh:
+use collegeDB
+Output:
+switched to db collegeDB
+
+🔷 Step 5: Check Database
+show dbs
+Database appears only after inserting data.
+
+🔷 Step 6: Create Collection
+db.createCollection("students")
+
+🔷 Step 7: Show Collections
+show collections
+Output:
+students
+
+🔷 Step 8: Insert Document
+6
+👉 Insert One Document
+db.students.insertOne({   name: "Apurv",   age: 21,   course: "AIDS"})
+Output:
+acknowledged: true
+
+🔷 Step 9: View Documents
+db.students.find()
+
+🔷 Step 10: Insert Multiple Documents
+db.students.insertMany([   {name:"Rahul", age:20, course:"CS"},   {name:"Sneha", age:22, course:"IT"}])
+
+🔷 Step 11: Query Documents
+👉 Find All
+db.students.find()
+👉 Find Specific
+db.students.find({age:21})
+👉 Pretty Format
+db.students.find().pretty()
+
+🔷 Step 12: Update Document
+5
+👉 Update One Document
+db.students.updateOne(   {name:"Apurv"},   {$set:{age:22}})
+
+🔷 Step 13: Delete Document
+👉 Delete One Document
+db.students.deleteOne({name:"Rahul"})
+
+🔷 Step 14: Delete Multiple Documents
+db.students.deleteMany({age:{$lt:22}})
+
+🔷 Step 15: Drop Collection
+db.students.drop()
+
+🔷 Step 16: Drop Database
+db.dropDatabase()
+
+🔷 Step 17: Exit mongosh
+exit
+
+🔷 Final Complete Flow
+mongoshuse collegeDBdb.createCollection("students")db.students.insertOne({   name:"Apurv",   age:21,   course:"AIDS"})db.students.find()db.students.updateOne(   {name:"Apurv"},   {$set:{age:22}})db.students.deleteOne({name:"Apurv"})
+
+🔷 Viva Important Questions
+❓ What is MongoDB?
+MongoDB is a NoSQL document-oriented database.
+❓ What is Collection?
+A collection is a group of MongoDB documents.
+❓ What is Document?
+A document is data stored in BSON format.
+❓ Difference between SQL and MongoDB?
+SQLMongoDBTableCollectionRowDocumentFixed SchemaFlexible Schema
