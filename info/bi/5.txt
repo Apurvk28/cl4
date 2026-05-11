@@ -1,0 +1,366 @@
+problem Statement
+Perform data clustering using any clustering algorithm.
+In this program:
+
+
+We use K-Means Clustering
+
+
+Dataset contains coordinate points
+
+
+Goal:
+Group similar data points into clusters
+
+
+
+🔷 First Understand Machine Learning Categories
+TypeDescriptionSupervised LearningUses labeled dataUnsupervised LearningUses unlabeled dataReinforcement LearningLearns through rewards
+
+🔷 What is Unsupervised Learning?
+Unsupervised Learning means:
+
+
+no output labels are given
+
+
+model finds hidden patterns automatically
+
+
+Example:
+
+
+customer segmentation
+
+
+grouping similar users
+
+
+recommendation systems
+
+
+
+🔷 What is Clustering?
+Cluster Analysis means:
+
+Grouping similar data points together.
+
+Example:
+
+
+students with similar marks
+
+
+customers with similar buying behavior
+
+
+similar movies
+
+
+
+🔷 Real Life Example of Clustering
+6
+Suppose a shopping website has customers.
+Clustering can group:
+
+
+high spenders
+
+
+low spenders
+
+
+regular customers
+
+
+without knowing labels beforehand.
+
+🔷 Types of Clustering Algorithms
+AlgorithmDescriptionK-MeansPartition-based clusteringHierarchical ClusteringTree-like clusteringDBSCANDensity-based clusteringMean ShiftCentroid shifting method
+
+🔷 What is K-Means Clustering?
+K-means Clustering is an unsupervised algorithm that:
+
+
+divides data into K groups
+
+
+groups similar points together
+
+
+
+🔷 What Does “K” Mean?
+K
+= number of clusters.
+Example:
+K = 2
+means:
+divide data into 2 groups.
+
+🔷 Main Idea of K-Means
+Algorithm works by:
+
+
+selecting centroids
+
+
+assigning nearby points
+
+
+recalculating centroids
+
+
+repeating until stable
+
+
+
+🔷 Important Terms
+TermMeaningClusterGroup of similar pointsCentroidCenter of clusterIterationRepeating processDistanceSimilarity measure
+
+🔷 K-Means Working Steps
+5
+
+🔶 Step 1: Choose K
+Example:
+K = 2
+
+🔶 Step 2: Select Random Centroids
+Initial cluster centers selected randomly.
+
+🔶 Step 3: Calculate Distance
+Distance formula:
+d=(x2−x1)2+(y2−y1)2d = \sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}d=(x2​−x1​)2+(y2​−y1​)2​-10-8-6-4-2246810-10-5510A(6.0, 6.0)B(-6.0, -6.0)d = 16.97Delta x = 12Delta y = 12
+This is Euclidean Distance.
+
+🔶 Step 4: Assign Nearest Cluster
+Each point joins nearest centroid.
+
+🔶 Step 5: Update Centroids
+New centroid:
+average of all points in cluster.
+
+🔶 Step 6: Repeat
+Continue until clusters stop changing.
+
+🔷 Sample Dataset
+X = np.array([    [1, 2],    [1.5, 1.8],    [5, 8],    [8, 8],    [1, 0.6],    [9, 11]])
+
+🔷 Visual Understanding
+Points:
+(1,2)(1.5,1.8)(1,0.6)
+are close together.
+Another group:
+(5,8)(8,8)(9,11)
+forms second cluster.
+
+🔷 Full Code
+import numpy as npimport matplotlib.pyplot as pltfrom sklearn.cluster import KMeans# Sample datasetX = np.array([    [1, 2], [1.5, 1.8], [5, 8],    [8, 8], [1, 0.6], [9, 11]])# Apply K-Meanskmeans = KMeans(n_clusters=2, random_state=0)kmeans.fit(X)# Get labels and centroidslabels = kmeans.labels_centroids = kmeans.cluster_centers_# Plottingplt.scatter(X[:, 0], X[:, 1], c=labels, cmap='viridis')plt.scatter(centroids[:, 0], centroids[:, 1], s=200, c='red')plt.title("K-Means Clustering")plt.xlabel("X")plt.ylabel("Y")plt.show()
+
+🔷 Line-by-Line Explanation
+
+🔶 Import NumPy
+import numpy as np
+What is NumPy?
+NumPy
+Used for:
+
+
+arrays
+
+
+matrices
+
+
+numerical operations
+
+
+
+🔶 Import Matplotlib
+import matplotlib.pyplot as plt
+What is Matplotlib?
+Matplotlib
+Used for:
+
+
+graphs
+
+
+charts
+
+
+visualizations
+
+
+
+🔶 Import KMeans
+from sklearn.cluster import KMeans
+Imports K-Means algorithm from:
+scikit-learn
+
+🔷 Create Dataset
+X = np.array([    [1, 2], [1.5, 1.8], [5, 8],    [8, 8], [1, 0.6], [9, 11]])
+Explanation:
+Creates 2D coordinate dataset.
+Each row:
+[x,y]
+represents one point.
+
+🔷 Apply K-Means
+kmeans = KMeans(n_clusters=2, random_state=0)
+Parameters:
+ParameterMeaningn_clusters=2Create 2 clustersrandom_state=0Fixed random initialization
+
+🔷 What is Random State?
+Used for:
+
+
+reproducible results
+
+
+same output every run
+
+
+
+🔷 Train K-Means
+kmeans.fit(X)
+Explanation:
+Algorithm:
+
+
+learns clusters
+
+
+finds centroids
+
+
+groups points
+
+
+
+🔷 Get Labels
+labels = kmeans.labels_
+What are Labels?
+Labels indicate cluster number.
+Example:
+[0 0 1 1 0 1]
+Meaning:
+
+
+points belong to cluster 0 or 1
+
+
+
+🔷 Get Centroids
+centroids = kmeans.cluster_centers_
+What are Centroids?
+Centroid:
+center point of cluster.
+Example:
+Cluster center
+
+🔷 Plot Data Points
+plt.scatter(X[:, 0], X[:, 1], c=labels, cmap='viridis')
+Explanation:
+X[:,0]
+all x-values.
+X[:,1]
+all y-values.
+c=labels
+colors based on clusters.
+
+🔷 Plot Centroids
+plt.scatter(centroids[:, 0], centroids[:, 1], s=200, c='red')
+Explanation:
+Plots centroids in red.
+ParameterMeanings=200large sizec='red'red color
+
+🔷 Add Title
+plt.title("K-Means Clustering")
+Adds graph title.
+
+🔷 Label Axes
+plt.xlabel("X")plt.ylabel("Y")
+Labels x-axis and y-axis.
+
+🔷 Display Graph
+plt.show()
+Displays clustering graph.
+
+🔷 Final Output
+8
+Graph shows:
+
+
+clustered points
+
+
+centroids
+
+
+different colors for groups
+
+
+
+🔷 Important Concepts
+
+🔶 Euclidean Distance
+Distance between points:
+d=(x2−x1)2+(y2−y1)2d = \sqrt{(x_2-x_1)^2 + (y_2-y_1)^2}d=(x2​−x1​)2+(y2​−y1​)2​-10-8-6-4-2246810-10-5510A(6.0, 6.0)B(-6.0, -6.0)d = 16.97Delta x = 12Delta y = 12
+Used to find nearest centroid.
+
+🔶 Inertia
+Measures:
+
+
+how tightly clustered points are
+
+
+Lower inertia:
+better clustering.
+
+🔶 Elbow Method
+5
+Used to find best value of K.
+
+🔷 Advantages of K-Means
+AdvantageExplanationSimpleEasy to understandFastEfficient algorithmScalableHandles large dataWorks wellOn separated clusters
+
+🔷 Disadvantages of K-Means
+DisadvantageExplanationNeed K beforehandMust choose cluster countSensitive to outliersNoise affects resultDifferent initializationDifferent results possible
+
+🔷 Real Life Applications
+Used in:
+
+
+Customer segmentation
+
+
+Recommendation systems
+
+
+Image compression
+
+
+Fraud detection
+
+
+Market analysis
+
+
+Social network analysis
+
+
+Companies:
+
+
+Netflix
+
+
+Amazon
+
+
+Spotify
+
+
+Google
+
