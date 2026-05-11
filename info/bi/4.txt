@@ -1,0 +1,451 @@
+Problem Statement
+
+Perform data classification using a Classification Algorithm.
+
+In this program:
+
+We use Logistic Regression
+Dataset: Breast Cancer Dataset
+Goal:
+Predict whether cancer is:
+Malignant (dangerous)
+Benign (non-dangerous)
+🔷 First Understand Machine Learning
+
+Machine Learning is a field where computers:
+
+learn from data
+identify patterns
+make predictions
+
+without being explicitly programmed.
+
+🔷 Types of Machine Learning
+7
+Type	Meaning
+Supervised Learning	Learns from labeled data
+Unsupervised Learning	Finds hidden patterns
+Reinforcement Learning	Learns using rewards/penalties
+🔷 What is Supervised Learning?
+
+In supervised learning:
+
+Input data + correct output are given.
+
+Example:
+
+Study Hours	Result
+2	Fail
+8	Pass
+
+Machine learns relationship.
+
+🔷 Two Main Types of Supervised Learning
+Type	Output
+Regression	Continuous values
+Classification	Categories/classes
+🔷 What is Regression?
+
+Regression predicts numerical values.
+
+Examples:
+
+House price prediction
+Temperature prediction
+Stock price prediction
+
+Output:
+
+25.6
+100000
+🔷 Types of Regression
+Type	Purpose
+Linear Regression	Predict continuous values
+Logistic Regression	Classification problems
+Polynomial Regression	Non-linear relationships
+🔷 What is Classification?
+
+Classification predicts categories/classes.
+
+Examples:
+
+Spam / Not Spam
+Cancer / No Cancer
+Pass / Fail
+
+Output:
+
+0 or 1
+🔷 Types of Classification
+Type	Explanation
+Binary Classification	Two classes
+Multi-class Classification	More than two classes
+Multi-label Classification	Multiple labels simultaneously
+🔷 What is Logistic Regression?
+
+Logistic Regression is a supervised machine learning algorithm used for:
+
+classification problems
+probability prediction
+
+Despite name “Regression”:
+it is mainly used for classification.
+
+🔷 Why Logistic Regression?
+
+Advantages:
+
+Simple
+Fast
+Easy to understand
+Works well for binary classification
+🔷 Logistic Regression Formula
+
+Instead of straight line prediction:
+it uses Sigmoid Function.
+
+σ(z)=
+1+e
+−z
+1
+	​
+
+
+Output range:
+
+0 to 1
+🔷 Sigmoid Function Meaning
+5
+
+If probability > 0.5:
+Class = 1
+
+Else:
+Class = 0
+
+Example:
+
+0.92 → Cancer
+0.12 → No Cancer
+🔷 What is Dataset?
+
+Dataset = collection of data.
+
+In this program:
+we use Breast Cancer dataset.
+
+🔷 Breast Cancer Dataset
+
+Contains:
+
+tumor measurements
+radius
+texture
+smoothness
+etc.
+
+Target:
+
+Value	Meaning
+0	Malignant
+1	Benign
+🔷 Full Code
+# Logistic Regression - Data Classification
+
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+from sklearn.datasets import load_breast_cancer
+
+data = load_breast_cancer()
+
+df = pd.DataFrame(data.data, columns=data.feature_names)
+df['target'] = data.target
+
+X = df.drop('target', axis=1)
+y = df['target']
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+model = LogisticRegression(max_iter=5000)
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("\nConfusion Matrix:\n", confusion_matrix(y_test, y_pred))
+print("\nClassification Report:\n", classification_report(y_test, y_pred))
+
+sample = X_test.iloc[[0]]
+prediction = model.predict(sample)
+
+print("\nSingle Prediction:", prediction)
+🔷 Line-by-Line Explanation
+🔶 Import NumPy
+import numpy as np
+What is NumPy?
+
+NumPy is used for:
+
+numerical operations
+arrays
+mathematical calculations
+🔶 Import Pandas
+import pandas as pd
+What is Pandas?
+
+pandas is used for:
+
+handling datasets
+tables
+data analysis
+🔶 Train Test Split
+from sklearn.model_selection import train_test_split
+Purpose:
+
+Splits dataset into:
+
+training data
+testing data
+🔶 Import Logistic Regression
+from sklearn.linear_model import LogisticRegression
+
+Imports Logistic Regression algorithm.
+
+🔶 Import Evaluation Metrics
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
+Used to evaluate model performance.
+
+🔶 Import Dataset
+from sklearn.datasets import load_breast_cancer
+
+Loads built-in breast cancer dataset.
+
+🔷 Load Dataset
+data = load_breast_cancer()
+
+Dataset loaded into variable.
+
+🔷 Create DataFrame
+df = pd.DataFrame(data.data, columns=data.feature_names)
+Explanation:
+
+Creates table using:
+
+feature values
+column names
+🔶 Add Target Column
+df['target'] = data.target
+
+Adds output column.
+
+🔷 Features and Target
+X = df.drop('target', axis=1)
+What is X?
+
+X
+contains input features.
+
+Example:
+
+radius
+texture
+area
+y = df['target']
+What is y?
+
+y
+contains output labels:
+
+0 or 1
+🔷 Train-Test Split
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+Explanation:
+Parameter	Meaning
+X	Features
+y	Labels
+test_size=0.2	20% testing
+random_state=42	Fixed random split
+🔷 Why Train-Test Split?
+
+Training data:
+
+model learns patterns
+
+Testing data:
+
+checks performance
+
+Usually:
+
+80% training
+20% testing
+🔷 Create Model
+model = LogisticRegression(max_iter=5000)
+Explanation:
+
+Creates Logistic Regression model.
+
+🔶 max_iter
+maximum iterations
+
+Model repeatedly learns until convergence.
+
+5000 iterations allowed.
+
+🔷 Train Model
+model.fit(X_train, y_train)
+What is Training?
+
+Model learns relationship between:
+
+inputs
+outputs
+🔷 Predict Output
+y_pred = model.predict(X_test)
+Explanation:
+
+Predicts class labels for test data.
+
+🔷 Accuracy Score
+accuracy_score(y_test, y_pred)
+Formula:
+
+Accuracy=
+Total Predictions
+Correct Predictions
+	​
+
+
+Example:
+
+95 correct out of 100
+
+Accuracy:
+
+95%
+🔷 Confusion Matrix
+confusion_matrix(y_test, y_pred)
+6
+
+Shows:
+
+correct predictions
+incorrect predictions
+🔷 Confusion Matrix Terms
+Term	Meaning
+TP	True Positive
+TN	True Negative
+FP	False Positive
+FN	False Negative
+🔷 Classification Report
+classification_report(y_test, y_pred)
+
+Provides:
+
+precision
+recall
+f1-score
+support
+🔷 Precision
+
+Precision=
+TP+FP
+TP
+	​
+
+
+Meaning:
+
+Out of predicted positives:
+how many were correct?
+
+🔷 Recall
+
+Recall=
+TP+FN
+TP
+	​
+
+
+Meaning:
+
+Out of actual positives:
+how many identified correctly?
+
+🔷 F1 Score
+
+F1=2×
+Precision+Recall
+Precision×Recall
+	​
+
+
+Balances precision and recall.
+
+🔷 Support
+
+Number of actual samples in each class.
+
+🔷 Single Sample Prediction
+sample = X_test.iloc[[0]]
+
+Takes one test sample.
+
+prediction = model.predict(sample)
+
+Predicts class.
+
+🔷 Print Prediction
+print("\nSingle Prediction:", prediction)
+
+Displays result.
+
+🔷 Example Output
+Accuracy: 0.97
+
+Confusion Matrix:
+[[41  2]
+ [ 1 70]]
+
+Classification Report:
+precision recall f1-score support
+
+Single Prediction: [1]
+🔷 Important Terms Summary
+Term	Meaning
+Classification	Predict categories
+Logistic Regression	Classification algorithm
+Dataset	Collection of data
+Features	Input variables
+Target	Output variable
+Training	Learning phase
+Testing	Evaluation phase
+Accuracy	Correct prediction ratio
+Precision	Prediction correctness
+Recall	Detection ability
+F1 Score	Balance metric
+🔷 Real Life Applications of Logistic Regression
+
+Used in:
+
+Disease prediction
+Spam detection
+Fraud detection
+Credit scoring
+Customer churn prediction
+Sentiment analysis
+
+Companies:
+
+Google
+Amazon
+Netflix
+PayPal
