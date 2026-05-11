@@ -1,0 +1,285 @@
+What is a Database?
+
+A database is a place where data is stored in an organized way.
+
+Examples:
+
+Student records
+Bank details
+Instagram users
+Amazon products
+Messages and posts
+
+Without databases:
+
+Data gets lost easily
+Searching becomes difficult
+Managing large data becomes slow
+🔷 What is SQL Database?
+
+SQL databases are called Relational Databases (RDBMS).
+
+Examples:
+
+MySQL
+Oracle Database
+PostgreSQL
+
+They store data in:
+
+Tables
+Rows
+Columns
+📌 Example of SQL Table
+ID	Name	Age	Course
+1	Apurv	21	AIDS
+2	Rahul	20	CS
+🔷 Problems with SQL Databases
+
+As applications became large like:
+
+Instagram
+Netflix
+Amazon
+WhatsApp
+
+SQL started facing some limitations.
+
+🔶 1. Fixed Schema Problem
+
+In SQL:
+
+Structure must be predefined.
+
+Example:
+
+CREATE TABLE students(
+   id INT,
+   name VARCHAR(20),
+   age INT
+);
+
+Suppose later you want:
+
+Email
+Address
+Skills
+Social links
+
+You must modify the table again.
+
+This is difficult for rapidly changing applications.
+
+🔶 2. Difficult Handling of Unstructured Data
+
+Modern apps store:
+
+Images
+Chats
+JSON data
+Social media posts
+Nested information
+
+SQL is not naturally designed for this.
+
+🔶 3. Scalability Issues
+
+When millions of users come:
+
+SQL scaling becomes expensive
+Vertical scaling has limits
+
+Big companies needed databases that scale horizontally.
+
+🔷 Why NoSQL Came?
+
+To solve SQL limitations, NoSQL databases were introduced.
+
+NoSQL means:
+
+“Not Only SQL”
+
+Types:
+
+Document databases
+Key-value databases
+Graph databases
+Column databases
+🔷 What is MongoDB?
+
+MongoDB is a NoSQL document-oriented database.
+
+It stores data in:
+
+Collections
+Documents
+
+instead of:
+
+Tables
+Rows
+🔷 MongoDB Data Structure
+📌 SQL vs MongoDB
+SQL	MongoDB
+Database	Database
+Table	Collection
+Row	Document
+Column	Field
+🔷 What is a Document?
+
+A document is data stored in JSON-like format called BSON.
+
+Example:
+
+{
+   "name":"Apurv",
+   "age":21,
+   "course":"AIDS"
+}
+
+This is called a document.
+
+🔷 What is a Collection?
+
+A collection is a group of documents.
+
+Example:
+
+students → collection
+
+Inside it:
+
+{ "name":"Apurv" }
+
+{ "name":"Rahul" }
+
+{ "name":"Sneha" }
+🔷 Why MongoDB is Better for Modern Applications?
+7
+🔶 1. Flexible Schema
+
+Different documents can have different fields.
+
+Example:
+
+{ "name":"Apurv", "age":21 }
+{ "name":"Rahul", "email":"rahul@gmail.com" }
+
+No need to redesign database.
+
+🔶 2. Stores JSON-like Data Naturally
+
+Modern web apps already use JSON.
+
+MongoDB works naturally with:
+
+JavaScript
+Node.js
+APIs
+React applications
+🔶 3. Faster Development
+
+Developers can:
+
+Add fields anytime
+Modify data easily
+Build apps quickly
+🔶 4. High Scalability
+
+MongoDB supports:
+
+Horizontal scaling
+Distributed databases
+Big data applications
+
+Used by large companies.
+
+🔷 Real Life Example
+📌 Instagram Post
+
+A post may contain:
+
+Caption
+Likes
+Comments
+Images
+Tags
+Location
+
+In SQL:
+
+Multiple tables required
+
+In MongoDB:
+Everything can be stored inside one document.
+
+Example:
+
+{
+   "username":"apurv",
+   "caption":"Trip to Goa",
+   "likes":500,
+   "comments":[
+      {"user":"rahul","text":"Nice"},
+      {"user":"sneha","text":"Awesome"}
+   ]
+}
+
+Very easy and natural.
+
+🔷 Advantages of MongoDB
+Advantage	Explanation
+Flexible Schema	No fixed structure
+Fast Development	Easy modifications
+JSON Format	Easy for web apps
+Scalability	Handles large users
+High Performance	Fast read/write
+Big Data Support	Good for modern apps
+🔷 Disadvantages of MongoDB
+Disadvantage	Explanation
+Less joins	Compared to SQL
+Data duplication	Possible
+Not ideal for complex transactions	Banking systems prefer SQL
+🔷 When to Use SQL?
+
+Use SQL when:
+
+Data relationships are complex
+Transactions are critical
+Banking systems
+Accounting systems
+🔷 When to Use MongoDB?
+
+Use MongoDB when:
+
+Data changes frequently
+Large scale applications
+Real-time apps
+Social media
+Content management
+MERN stack applications
+🔷 Companies Using MongoDB
+6
+
+Companies:
+
+Netflix
+Uber
+Adobe
+eBay
+🔷 Final Conclusion
+
+MongoDB is a:
+
+NoSQL
+Document-oriented
+Flexible
+Scalable database
+
+designed for modern applications where:
+
+data changes frequently,
+scalability is important,
+and rapid development is needed.
+
+It solves many limitations of traditional SQL databases and is widely used in modern web development, especially in the MERN stack.
