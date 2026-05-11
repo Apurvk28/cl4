@@ -1,0 +1,353 @@
+ Problem Statement
+Develop a MapReduce program to:
+
+
+Find the average age of male passengers who died
+
+
+Find how many female passengers died in each passenger class
+
+
+using the Titanic dataset.
+
+🔷 First Understand the Titanic Dataset
+The Titanic dataset contains passenger information from the Titanic ship disaster.
+Example columns:
+ColumnMeaningPassengerIdPassenger IDSurvived0 = Dead, 1 = SurvivedPclassTicket class (1,2,3)NamePassenger nameSexMale/FemaleAgePassenger age
+
+🔷 What is Big Data?
+Big Data means:
+
+
+Huge amount of data
+
+
+Difficult to process on one machine
+
+
+Requires distributed processing
+
+
+Examples:
+
+
+YouTube videos
+
+
+Instagram posts
+
+
+Banking transactions
+
+
+Netflix logs
+
+
+
+🔷 What is Hadoop?
+Apache Hadoop is a framework used for:
+
+
+storing big data
+
+
+processing large datasets
+
+
+Main components:
+
+
+HDFS → Storage
+
+
+MapReduce → Processing
+
+
+
+🔷 What is MapReduce?
+MapReduce is a programming model used to process large datasets.
+It works in 2 phases:
+
+🔶 1. Mapper Phase
+Mapper:
+
+
+Reads data
+
+
+Filters/processes it
+
+
+Produces key-value pairs
+
+
+Example:
+("male_age", 25)("female_class", 1)
+
+🔶 2. Reducer Phase
+Reducer:
+
+
+Collects mapper output
+
+
+Groups similar keys
+
+
+Performs calculations
+
+
+Example:
+Average age = total_age / total_people
+
+🔷 Flow of MapReduce
+6
+Input Data
+⬇
+Mapper
+⬇
+Key-Value Pairs
+⬇
+Shuffle & Sort
+⬇
+Reducer
+⬇
+Final Output
+
+🔷 Goal of This Program
+We need:
+
+
+Average age of dead males
+
+
+Number of dead females in each class
+
+
+
+🔷 Full Code
+import csv# Mapper Functiondef mapper(file_path):    mapped = []    with open(file_path, 'r') as file:        reader = csv.DictReader(file)        for row in reader:            survived = row['Survived']            pclass = row['Pclass']            sex = row['Sex']            age = row['Age']            # Skip missing age            if age == "":                continue            age = float(age)            # Male and died            if survived == '0' and sex == 'male':                mapped.append(("male_age", age))            # Female and died            if survived == '0' and sex == 'female':                mapped.append(("female_class", pclass))    return mapped# Reducer Functiondef reducer(mapped_data):    from collections import defaultdict    male_age_sum = 0    male_count = 0    female_class_count = defaultdict(int)    for key, value in mapped_data:        if key == "male_age":            male_age_sum += value            male_count += 1        elif key == "female_class":            female_class_count[value] += 1    avg_age = male_age_sum / male_count if male_count > 0 else 0    return avg_age, female_class_count# Driver Codedef main():    file_path = "titanic.csv"    mapped = mapper(file_path)    avg_age, female_counts = reducer(mapped)    print("Average age of males who died:", round(avg_age, 2))    print("\nDead females in each class:")    for cls, count in sorted(female_counts.items()):        print(f"Class {cls}: {count}")if __name__ == "__main__":    main()
+
+🔷 Line-by-Line Explanation
+
+🔶 Import CSV Module
+import csv
+Explanation:
+Imports Python CSV module to read CSV files.
+
+🔶 Mapper Function
+def mapper(file_path):
+Explanation:
+Defines mapper function.
+file_path
+→ path of Titanic CSV file.
+
+mapped = []
+Explanation:
+Creates empty list to store mapper output.
+Example:
+[("male_age", 25), ("female_class", "1")]
+
+🔶 Open File
+with open(file_path, 'r') as file:
+Explanation:
+Opens CSV file in read mode.
+with
+automatically closes file after use.
+
+🔶 Read CSV
+reader = csv.DictReader(file)
+Explanation:
+Reads CSV row as dictionary.
+Example:
+{ "Sex":"male", "Age":"25"}
+
+🔶 Loop Through Rows
+for row in reader:
+Explanation:
+Reads each passenger row one by one.
+
+🔶 Extract Required Columns
+survived = row['Survived']pclass = row['Pclass']sex = row['Sex']age = row['Age']
+Explanation:
+Extracts values from CSV row.
+
+🔶 Handle Missing Age
+if age == "":    continue
+Explanation:
+Skips rows where age is missing.
+continue
+→ move to next iteration.
+
+🔶 Convert Age to Float
+age = float(age)
+Explanation:
+Converts string age into decimal number.
+Example:
+"25" → 25.0
+
+🔶 Male Dead Condition
+if survived == '0' and sex == 'male':
+Explanation:
+Checks:
+
+
+passenger died
+
+
+passenger is male
+
+
+
+🔶 Mapper Output for Male
+mapped.append(("male_age", age))
+Explanation:
+Stores key-value pair.
+Example:
+("male_age", 30)
+Meaning:
+dead male age = 30
+
+🔶 Female Dead Condition
+if survived == '0' and sex == 'female':
+Explanation:
+Checks:
+
+
+passenger died
+
+
+passenger is female
+
+
+
+🔶 Mapper Output for Female
+mapped.append(("female_class", pclass))
+Example:
+("female_class", "2")
+Meaning:
+dead female belongs to class 2.
+
+🔶 Return Mapper Output
+return mapped
+Returns all key-value pairs.
+
+🔷 Reducer Function
+def reducer(mapped_data):
+Reducer processes mapper output.
+
+🔶 Import defaultdict
+from collections import defaultdict
+Explanation:
+Dictionary with default values.
+
+🔶 Variables
+male_age_sum = 0male_count = 0female_class_count = defaultdict(int)
+Explanation:
+Stores:
+
+
+total male age
+
+
+male count
+
+
+female class counts
+
+
+
+🔶 Process Mapper Data
+for key, value in mapped_data:
+Loops through mapper output.
+
+🔶 Process Male Ages
+if key == "male_age":    male_age_sum += value    male_count += 1
+Explanation:
+Adds age and increases count.
+
+🔶 Process Female Classes
+elif key == "female_class":    female_class_count[value] += 1
+Explanation:
+Counts females in each class.
+
+🔶 Calculate Average
+avg_age = male_age_sum / male_count if male_count > 0 else 0
+Explanation:
+Formula:
+Average Age=Total AgeNumber of Males\text{Average Age} = \frac{\text{Total Age}}{\text{Number of Males}}Average Age=Number of MalesTotal Age​
+
+🔶 Return Results
+return avg_age, female_class_count
+Returns:
+
+
+average age
+
+
+female class counts
+
+
+
+🔷 Main Function
+def main():
+Program execution starts here.
+
+🔶 File Path
+file_path = "titanic.csv"
+Titanic dataset filename.
+
+🔶 Call Mapper
+mapped = mapper(file_path)
+Executes mapper phase.
+
+🔶 Call Reducer
+avg_age, female_counts = reducer(mapped)
+Executes reducer phase.
+
+🔶 Print Output
+print("Average age of males who died:", round(avg_age, 2))
+Prints average age.
+
+for cls, count in sorted(female_counts.items()):
+Sorts classes before printing.
+
+🔷 Final Output Example
+Average age of males who died: 31.62Dead females in each class:Class 1: 5Class 2: 6Class 3: 72
+
+🔷 Key Terms Summary
+TermMeaningBig DataHuge dataHadoopBig data frameworkMapReduceData processing modelMapperCreates key-value pairsReducerAggregates/calculates resultsCSVComma-separated values filedefaultdictDictionary with default values
+
+🔷 Why MapReduce is Important?
+Advantages:
+
+
+Processes huge data
+
+
+Parallel processing
+
+
+Faster computation
+
+
+Distributed systems support
+
+
+Fault tolerance
+
+
+Used in:
+
+
+Google
+
+
+Facebook
+
+
+Netflix
+
+
+Amazon
+
