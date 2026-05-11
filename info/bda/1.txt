@@ -1,0 +1,388 @@
+Problem Statement
+
+Develop a MapReduce program to:
+
+Read a text file
+Count frequency of words
+Find occurrence of a specific word
+
+Example:
+
+data
+
+Output:
+
+Frequency of 'data': 5
+🔷 What is Word Frequency?
+
+Word frequency means:
+
+How many times a word appears in a file.
+
+Example:
+
+File content:
+
+Data science uses big data.
+Data is important.
+
+Frequency of "data":
+
+2
+🔷 Why Use MapReduce for Word Count?
+
+Word counting is one of the most famous applications of MapReduce.
+
+Used in:
+
+Google Search
+Search engines
+Text analytics
+NLP
+Big data processing
+
+When files become huge:
+
+millions of words
+GBs/TBs of text
+
+MapReduce helps process data efficiently.
+
+🔷 MapReduce Concept
+🔶 Mapper Phase
+
+Mapper:
+
+Reads words
+Converts into key-value pairs
+
+Example:
+
+("data", 1)
+
+Meaning:
+
+word = data
+appeared once
+🔶 Reducer Phase
+
+Reducer:
+
+Combines same words
+Adds counts
+
+Example:
+
+data → 5
+🔷 Flow of Program
+5
+
+Text File
+⬇
+Mapper
+⬇
+(word,1) Pairs
+⬇
+Reducer
+⬇
+Total Word Counts
+
+🔷 Full Code
+# Mapper function
+def mapper(file_path):
+    word_pairs = []
+    
+    with open(file_path, 'r') as file:
+        for line in file:
+            words = line.strip().split()
+            for word in words:
+                word = word.lower()  # normalize
+                word_pairs.append((word, 1))
+    
+    return word_pairs
+
+
+# Reducer function
+def reducer(mapped_data):
+    reduced_data = {}
+    
+    for word, count in mapped_data:
+        if word in reduced_data:
+            reduced_data[word] += count
+        else:
+            reduced_data[word] = count
+    
+    return reduced_data
+
+
+# Main function to get frequency of a specific word
+def word_frequency(file_path, target_word):
+    mapped = mapper(file_path)
+    reduced = reducer(mapped)
+    
+    target_word = target_word.lower()
+    
+    return reduced.get(target_word, 0)
+
+
+# Example usage
+if __name__ == "__main__":
+    file_path = "sample.txt"
+    target_word = "data"
+    
+    freq = word_frequency(file_path, target_word)
+    print(f"Frequency of '{target_word}':", freq)
+🔷 Line-by-Line Explanation
+🔶 Mapper Function
+def mapper(file_path):
+Explanation:
+
+Mapper reads the file and creates key-value pairs.
+
+🔶 Empty List
+word_pairs = []
+Explanation:
+
+Stores mapper output.
+
+Example:
+
+[
+ ('data',1),
+ ('science',1)
+]
+🔶 Open File
+with open(file_path, 'r') as file:
+Explanation:
+
+Opens text file in read mode.
+
+🔶 Read Each Line
+for line in file:
+Explanation:
+
+Reads file line by line.
+
+🔶 Remove Spaces and Split Words
+words = line.strip().split()
+Explanation:
+strip()
+
+Removes extra spaces/newline.
+
+split()
+
+Separates words.
+
+Example:
+
+"Data science"
+
+becomes:
+
+["Data", "science"]
+🔶 Process Each Word
+for word in words:
+
+Loops through every word.
+
+🔶 Convert to Lowercase
+word = word.lower()
+Explanation:
+
+Converts:
+
+DATA
+Data
+data
+
+all into:
+
+data
+
+This is called normalization.
+
+🔶 Create Key-Value Pair
+word_pairs.append((word, 1))
+Explanation:
+
+Each word contributes:
+
+(word,1)
+
+Example:
+
+("data",1)
+
+Meaning:
+word appeared once.
+
+🔶 Return Mapper Output
+return word_pairs
+
+Returns all key-value pairs.
+
+🔷 Example Mapper Output
+
+Suppose file contains:
+
+data science data
+
+Mapper output:
+
+[
+ ('data',1),
+ ('science',1),
+ ('data',1)
+]
+🔷 Reducer Function
+def reducer(mapped_data):
+
+Reducer combines counts.
+
+🔶 Empty Dictionary
+reduced_data = {}
+Explanation:
+
+Stores final frequencies.
+
+Example:
+
+{
+ 'data':2
+}
+🔶 Read Mapper Output
+for word, count in mapped_data:
+
+Reads:
+
+('data',1)
+🔶 Check Existing Word
+if word in reduced_data:
+
+Checks whether word already exists.
+
+🔶 Increase Count
+reduced_data[word] += count
+Explanation:
+
+Adds frequencies.
+
+Formula:
+New Count=Old Count+1
+
+🔶 Add New Word
+else:
+    reduced_data[word] = count
+
+If word appears first time:
+store count = 1
+
+🔶 Return Reduced Data
+return reduced_data
+
+Returns final frequencies.
+
+🔷 Example Reducer Output
+
+Input:
+
+[
+ ('data',1),
+ ('science',1),
+ ('data',1)
+]
+
+Output:
+
+{
+ 'data':2,
+ 'science':1
+}
+🔷 Word Frequency Function
+def word_frequency(file_path, target_word):
+Explanation:
+
+Finds frequency of specific word.
+
+🔶 Call Mapper
+mapped = mapper(file_path)
+
+Runs mapper phase.
+
+🔶 Call Reducer
+reduced = reducer(mapped)
+
+Runs reducer phase.
+
+🔶 Normalize Target Word
+target_word = target_word.lower()
+
+Converts target word to lowercase.
+
+🔶 Get Frequency
+return reduced.get(target_word, 0)
+Explanation:
+get()
+
+retrieves frequency.
+
+If word not found:
+returns 0
+
+🔷 Main Execution
+if __name__ == "__main__":
+
+Ensures program runs directly.
+
+🔶 File Name
+file_path = "sample.txt"
+
+Input text file.
+
+🔶 Target Word
+target_word = "data"
+
+Word to search.
+
+🔶 Find Frequency
+freq = word_frequency(file_path, target_word)
+
+Executes MapReduce process.
+
+🔶 Print Output
+print(f"Frequency of '{target_word}':", freq)
+
+Prints final result.
+
+🔷 Example Input File
+Data science uses data.
+Big data is important.
+🔷 Final Output
+Frequency of 'data': 3
+🔷 Important Terms
+Term	Meaning
+MapReduce	Big data processing model
+Mapper	Produces key-value pairs
+Reducer	Combines frequencies
+Key	Word
+Value	Count
+Normalization	Standardizing text
+split()	Separates words
+lower()	Converts lowercase
+🔷 Advantages of Word Count using MapReduce
+Advantage	Explanation
+Parallel Processing	Faster counting
+Scalable	Handles huge text files
+Distributed	Multiple systems
+Efficient	Good for big data
+🔷 Real Life Applications
+
+Used in:
+
+Google search indexing
+Social media analytics
+NLP systems
+Spam filtering
+Recommendation engines
+Sentiment analysis
